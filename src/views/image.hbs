@@ -1,0 +1,28 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h2>{{images.title}}</h2>
+        <button class="btn btn-danger" id="btn-delete" data-id="{{images._id}}">
+            <i class="fa fa-times"></i>Delete
+        </button>
+    </div>
+    <div class="card-body">
+        <p>{{images.description}}</p>
+        <div class="text-center">
+            <img src="/public/upload/{{images.filename}}" alt="" class="img-fluid">
+        </div>
+    </div>
+    <div class="card-footer d-flex justify-content-between align-items-center">
+        <button class="btn btn-success" id="btn-like" data-id="{{images.filename}}">
+            👍Like
+        </button>
+        <p>
+            <span class="likes-count">❤️{{images.likes}}</span>
+        </p>
+        <p>
+            <span>👁️‍🗨️{{images.views}}</span>
+        </p>
+        <p>
+            <span>🕐{{timeago images.timestamp}}</span>
+        </p>
+    </div>
+</div>

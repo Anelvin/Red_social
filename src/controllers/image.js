@@ -8,8 +8,9 @@ const {
     Image
 } = require('../models/index');
 
-controller.index = (req, res) => {
-
+controller.index = async(req, res) => {
+    const images = await Image.findOne({_id:req.params.image_id});
+    res.render('image',{images});
 };
 
 controller.create = async (req, res) => {
@@ -33,7 +34,7 @@ controller.create = async (req, res) => {
                     description: req.body.description
                 });
                 const imageSaved = await newImg.save();
-                //res.redirect('/images');
+                res.redirect('/images/'+imageSaved._id);
                 res.send('Funciona');
             } else {
                 await fs.unlink(imageTempPath);
