@@ -9,11 +9,13 @@ const {
 } = require('../models/index');
 
 controller.index = async(req, res) => {
-    const images = await Image.findOne({_id:req.params.image_id});
-    res.render('image',{images});
+    const image = await Image.findOne({_id:req.params.image_id});
+    const comments = await Comment.find({image_id:image._id})
+    res.render('image',{image, comments});
 };
 
 const md5=require('md5');
+
 
 controller.create = async (req, res) => {
 
@@ -52,6 +54,7 @@ controller.like = (req, res) => {
 
 };
 controller.comment = async (req, res) => {
+    console.log('hasta aqui');
     const image = await Image.findOne({_id:req.params.image_id});
     if(image){
         const newComment = new Comment(req.body);
