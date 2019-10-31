@@ -6,7 +6,6 @@ const {Image, Comment} = require('../models/index');
 const md5 = require('md5');
 
 
-
 controller.index = async (req, res) => {
     const viewModel = {
         image: {},
@@ -67,8 +66,15 @@ controller.create = async (req, res) => {
     saveImage();
 
 };
-controller.like = (req, res) => {
-
+controller.like = async (req, res) => {
+    const image = await Image.findOne({_id:req.params.image_id});
+    if(image){
+        image.likes = image.likes + 1;
+        await image.save();
+        res.json({likes:image.likes})
+    }else{
+        res.status(500).json({error:'Internal Error'});
+    }
 };
 controller.comment = async (req, res) => {
     console.log('hasta aqui');
