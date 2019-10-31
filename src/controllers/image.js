@@ -5,13 +5,15 @@ const path = require('path')
 const controller = {};
 const fs = require('fs-extra');
 const {
-    Image
+    Image, Comment
 } = require('../models/index');
 
 controller.index = async(req, res) => {
     const images = await Image.findOne({_id:req.params.image_id});
     res.render('image',{images});
 };
+
+const md5=require('md5');
 
 controller.create = async (req, res) => {
 
@@ -35,7 +37,6 @@ controller.create = async (req, res) => {
                 });
                 const imageSaved = await newImg.save();
                 res.redirect('/images/'+imageSaved._id);
-                res.send('Funciona');
             } else {
                 await fs.unlink(imageTempPath);
                 res.status(500).json({Error: ' Solo están permitidas imagenes'});
@@ -46,15 +47,20 @@ controller.create = async (req, res) => {
 
     saveImage();
 
-
-
-
 };
 controller.like = (req, res) => {
 
 };
-controller.comment = (req, res) => {
-
+controller.comment = async (req, res) => {
+    const image = await Image.findOne({_id:req.params.image_id});
+    if(image){
+        const newComment = new Comment(req.body);
+        newComment.gravatar = md5(newComment.email);
+        newComment.image_id = image._id;
+        await newComment.save();
+        res.redirect('/images/'+image._id);
+    }
+    
 };
 controller.remove = (req, res) => {
 

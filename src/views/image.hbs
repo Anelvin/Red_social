@@ -25,4 +25,33 @@
             <span>🕐{{timeago images.timestamp}}</span>
         </p>
     </div>
+
+    <div class="card mt-2">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3>Comments</h3>
+            <button class="btn btn-info" id="btn-toggle-comment">
+                <span>Post a Comment</span>
+            </button>
+        </div>
+        <div class="card-body">
+            <blockquote>
+                <form action="/images/{{images._id}}/comment" method="POST">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="name" id="" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="email" class="form-control" id="" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <textarea name="comment" id="" class="form-control" placeholder="Your comment" rows="10"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success" id="btn-comment">
+                            Post
+                        </button>
+                    </div>
+                </form>
+            </blockquote>
+        </div>
+    </div>
 </div>
