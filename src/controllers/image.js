@@ -1,27 +1,42 @@
-const {
-    randomNumber
-} = require('../helpers/libs');
+const {randomNumber} = require('../helpers/libs');
 const path = require('path')
 const controller = {};
 const fs = require('fs-extra');
-const {
-    Image, Comment
-} = require('../models/index');
+const {Image, Comment} = require('../models/index');
+const md5 = require('md5');
 
-controller.index = async(req, res) => {
-    const image = await Image.findOne({_id:req.params.image_id});
-    const comments = await Comment.find({image_id:image._id})
-    res.render('image',{image, comments});
+
+
+controller.index = async (req, res) => {
+    const viewModel = {
+        image: {},
+        comments: {}
+    }
+    const image = await Image.findOne({
+        _id: req.params.image_id
+    });
+    if (image) {
+        image.views = image.views + 1;
+        viewModel.image = image;
+        await image.save();
+        const comments = await Comment.find({
+            image_id: image._id
+        })
+        viewModel.comments = comments;
+        res.render('image', viewModel);
+    } else {
+        res.redirect('/');
+    }
 };
-
-const md5=require('md5');
 
 
 controller.create = async (req, res) => {
 
-    const saveImage = async() => {
+    const saveImage = async () => {
         const imgURL = randomNumber();
-        const images = await Image.find({filename: imgURL});
+        const images = await Image.find({
+            filename: imgURL
+        });
         if (images.length > 0) {
             saveImage();
         } else {
@@ -38,10 +53,12 @@ controller.create = async (req, res) => {
                     description: req.body.description
                 });
                 const imageSaved = await newImg.save();
-                res.redirect('/images/'+imageSaved._id);
+                res.redirect('/images/' + imageSaved._id);
             } else {
                 await fs.unlink(imageTempPath);
-                res.status(500).json({Error: ' Solo están permitidas imagenes'});
+                res.status(500).json({
+                    Error: ' Solo están permitidas imagenes'
+                });
             }
         }
 
@@ -55,15 +72,19 @@ controller.like = (req, res) => {
 };
 controller.comment = async (req, res) => {
     console.log('hasta aqui');
-    const image = await Image.findOne({_id:req.params.image_id});
-    if(image){
+    const image = await Image.findOne({
+        _id: req.params.image_id
+    });
+    if (image) {
         const newComment = new Comment(req.body);
         newComment.gravatar = md5(newComment.email);
         newComment.image_id = image._id;
         await newComment.save();
-        res.redirect('/images/'+image._id);
+        res.redirect('/images/' + image._id);
+    } else {
+        res.redirect('/');
     }
-    
+
 };
 controller.remove = (req, res) => {
 
