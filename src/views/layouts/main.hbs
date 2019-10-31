@@ -6,13 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>ImgShare</title>
+    <script src="https://kit.fontawesome.com/yourcode.js"></script>
+    <title>ImgPublish</title>
 </head>
 <body>
-    <div class="nav navbar-dark bg-dark">
+    <div class="nav navbar-dark bg-info">
         <div class="container">
             <a href="/" class="navbar-brand">
-                Logo
+                <img src="/public/img/imgPublish.png" alt="imgPublish" width="100" height="100">
             </a>
         </div>
     </div>
@@ -23,7 +24,9 @@
                  {{{body}}}
             </div>
             <div class="col-md-4">
-
+                {{>stats}}
+                {{>popular}}
+                {{>comments}}
             </div>
         </div>
        
@@ -34,6 +37,7 @@
   src="https://code.jquery.com/jquery-3.4.1.js"
   integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
   crossorigin="anonymous"></script>
+  
   <!--CUSTOM CODE-->
   <script src="/public/js/scripts.js"></script>
 </body>

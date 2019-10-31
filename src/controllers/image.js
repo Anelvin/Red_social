@@ -4,10 +4,11 @@ const controller = {};
 const fs = require('fs-extra');
 const {Image, Comment} = require('../models/index');
 const md5 = require('md5');
+const sidebar = require('../helpers/sidebar');
 
 
 controller.index = async (req, res) => {
-    const viewModel = {
+    let viewModel = {
         image: {},
         comments: {}
     }
@@ -22,6 +23,7 @@ controller.index = async (req, res) => {
             image_id: image._id
         })
         viewModel.comments = comments;
+        viewModel = await sidebar(viewModel);
         res.render('image', viewModel);
     } else {
         res.redirect('/');
