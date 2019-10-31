@@ -92,8 +92,14 @@ controller.comment = async (req, res) => {
     }
 
 };
-controller.remove = (req, res) => {
-
+controller.remove = async (req, res) => {
+    const image = await Image.findOne({_id:req.params.image_id});
+    if(image){
+        await fs.unlink(path.resolve('public/upload/'+image.filename));
+        await Comment.deleteOne({image_id:image._id});
+        await image.remove();
+        res.json(true);
+    }
 };
 
 module.exports = controller;
